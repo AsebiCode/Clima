@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Clima</title>
+    <script defer src="src/script.js"></script>
+    <link rel="stylesheet" href="src/output.css">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-md w-80 text-center">
+        <h1 class="text-green-400text-xl font-bold mb-4">Consulta de Clima</h1>
+        <input type="text" id="cidade" placeholder="Digite a cidade" 
+            class="border p-2 rounded w-full mb-3">
+        <button onclick="buscarClima()" 
+            class="bg-blue-500 text-white px-4 py-2 rounded w-full">Buscar</button>
+        <div id="resultado" class="mt-4 text-gray-700"></div>
+    </div>
+</body>
+</html>
