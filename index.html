@@ -7,14 +7,19 @@
     <script defer src="src/script.js"></script>
     <link rel="stylesheet" href="src/output.css">
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-6 rounded-lg shadow-md w-80 text-center">
-        <h1 class="text-green-400text-xl font-bold mb-4">Consulta de Clima</h1>
-        <input type="text" id="cidade" placeholder="Digite a cidade" 
-            class="border p-2 rounded w-full mb-3">
-        <button onclick="buscarClima()" 
-            class="bg-blue-500 text-white px-4 py-2 rounded w-full">Buscar</button>
-        <div id="resultado" class="mt-4 text-gray-700"></div>
-    </div>
+<body class="min-h-screen bg-linear-to-b from-indigo-500 to-sky-300">
+    <main class="">
+        <section class="h-7/8 w-18/20 p-5 bg-white/40 rounded-2xl flex absolute top-1/2 left-1/2 -translate-1/2">
+            <article class="text-white w-full">
+                <p class="font-medium mb-1">Bairro, Cidade, Estado</p>
+                <p class="font-bold text-8xl mb-1">25º</p>
+                <p class="mb-1">min / max</p>
+                <p class="mb-5">IQA</p> <!-- índice da qualidade do ar -->
+
+                <input type="text" id="cidade" placeholder="Cidade, Bairro, Estado" class="outline-0 p-2 mb-3 rounded-xl w-full bg-white/50 text-sky-700">
+                <button onclick="buscarClima()"  class="bg-blue-500 text-white font-medium px-4 py-2 rounded-xl w-full">Buscar</button>
+            </article>
+        </section>
+    </main>
 </body>
 </html>
