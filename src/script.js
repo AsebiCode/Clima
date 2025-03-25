@@ -10,11 +10,11 @@ function Saudacao() {
     let saudacao = document.getElementById("Saudacao").textContent;
 
     if (hora >= 5 && hora < 12) {
-        saudacao = "Bom dia!";
+        saudacao = "Bom Dia!";
     } else if (hora >= 12 && hora < 18) {
-        saudacao = "Boa tarde!";
+        saudacao = "Boa Tarde!";
     } else {
-        saudacao = "Boa noite!";
+        saudacao = "Boa Noite!";
     }
 
     document.getElementById("Saudacao").textContent = saudacao;
@@ -24,13 +24,14 @@ async function buscarClima() {
     const apiKey = "2af363ce7663ae2ea4559b21638b2e43";
     const inputBusca = document.getElementById("busca");
     const busca = inputBusca.value.trim();
+    const [cidade, estado = "", pais = "BR"] = busca.split(",");
 
     if (busca === "") {
         alert("Por favor, digite uma cidade válida!");
         return;
     }
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${busca}&appid=${apiKey}&units=metric&lang=pt_br`;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${cidade.trim()},${estado.trim()},${pais.trim()}&appid=${apiKey}&units=metric&lang=pt_br`;
 
     try {
         const resposta = await fetch(url);
@@ -47,21 +48,46 @@ async function buscarClima() {
 }
 
 function exibirDados(dados) {
-    const { name, main, weather } = dados;
-    const temperatura = Math.round(main.temp);
-    const descricao = weather[0].description;
+    const cidade = dados.city.name;
+    const previsao = dados.list[0];
+    const temperatura = Math.round(previsao.main.temp);
+    const descricao = previsao.weather[0].description;
+    const temperaturas = calcularMinMax(dados.list);
     
-    let InfosPrincipais = document.getElementById('InfosPrincipais');
+    let saudacao = document.getElementById("Saudacao");
+    let infosPrincipais = document.getElementById("InfosPrincipais");
 
-    document.getElementById('Saudacao').classList.add("hidden");
-    InfosPrincipais.classList.remove("hidden");
-    InfosPrincipais.innerHTML = `
-        <p class="font-medium mb-1">${name}</p>
+    // Remove a animação de entrada antes de adicionar a de saída
+    saudacao.classList.remove("animate-fade-in-up");
+
+    setTimeout(() => {
+        saudacao.classList.add("animate-fade-in-down");
+    }, 10); // Pequeno delay para garantir que a classe seja aplicada
+
+    setTimeout(() => {
+        saudacao.classList.add("hidden"); // Só esconde depois da animação
+        infosPrincipais.classList.remove("hidden");
+        infosPrincipais.classList.add("animate-fade-in-up");
+    }, 700);
+
+
+    infosPrincipais.innerHTML = `
+        <p class="font-medium mb-1">${cidade}</p>
         <p class="font-bold text-7xl mb-1">${temperatura}º</p>
-        <p class="mb-1">Min: ${main.temp_min}º / Max: ${main.temp_max}º</p>
+        <p class="mb-1">Min: ${temperaturas.tempMin}º / Max: ${temperaturas.tempMax}º</p>
         <p class="mb-5 capitalize">${descricao}</p>
     `;
+}
 
-    // Re-adiciona o evento ao botão porque o HTML foi substituído
-    document.querySelector("button").addEventListener("click", buscarClima);
+// Função para calcular a temperatura mínima e máxima do dia
+function calcularMinMax(lista) {
+    let tempMin = Infinity;
+    let tempMax = -Infinity;
+
+    lista.forEach((item) => {
+        tempMin = Math.min(tempMin, item.main.temp_min);
+        tempMax = Math.max(tempMax, item.main.temp_max);
+    });
+
+    return { tempMin: Math.round(tempMin), tempMax: Math.round(tempMax) };
 }
